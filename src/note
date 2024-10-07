@@ -1,0 +1,21 @@
+homepage:
+sidebar - tasks page, projects page
+user opens the tasks page - add task
+user opens the projects page - template
+
+Add task:
+Task Name
+Task Description
+Task Priority - priority module
+Task Due Date - due module
+Task Checklist - checklist module
+
+View Task: - viewtask module
+Task name, Task Desc, Priority, Due Date / delete
+
+View Projects: - viewproject module
+Section Title > Task name, Task Desc, Priority, Due Date / delete
+
+Expand Task: - expand module
+view details
+crud
