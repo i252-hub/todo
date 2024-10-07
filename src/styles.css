@@ -193,7 +193,8 @@ div.flatpickr-calendar {
     width: 350px !important;           
     font-size: 1rem !important; 
     position: absolute !important; 
-    right: 4rem !important;      
+    right: 4rem !important;   
+    z-index: 15;   
 }
 
 .flatpickr-day, .flatpickr-month, .flatpickr-weekdays {
@@ -291,3 +292,45 @@ form.moved{
     width: 80%;
     padding-top: 1.5rem;
 }
+
+.modal{
+    background: #FDF4F1 !important;
+    width: 30em !important;
+    height: 10em !important;
+    position: absolute !important;
+    left: 25.5%;
+    top: 20%;
+    overflow-x: hidden;
+
+   
+}
+
+.modal-container{
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;  /* Make sure it covers the full viewport width */
+    height: 100vh !important; /* Make sure it covers the full viewport height */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    z-index: 9999 !important; /* Ensure it's on top of other elements */
+
+}
+
+
+.modal .form {
+    width: 90%; /* Make the form take full width of the modal */
+    height: 50%; /* Make the form take full height of the modal */
+    display: flex; /* Use flexbox if you want to align items inside */
+    flex-direction: column; /* Align children in a column */
+    padding: 1rem; /* Add some padding if necessary */
+    box-sizing: border-box; /* Ensure padding does not affect width */
+    border: none;
+    position: relative;
+    right: 4rem;
+    
+}
+
+
+

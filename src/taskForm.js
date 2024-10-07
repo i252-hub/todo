@@ -4,9 +4,9 @@ import { addTask } from "./taskStorage";
 import { createPriorityDropdown } from './prioritylist';
 import taskpage from "./taskpage";
 import flatpickr from "flatpickr";
+import {showTaskModal} from "./modal";
 
-
-export default function showForm() {
+export default function showForm(task = null) {
     console.log('hello');
 const main = document.querySelector('#main');
 
@@ -24,6 +24,7 @@ titleInput.type = 'text';
 titleInput.id = 'titleInput';
 titleInput.placeholder = 'Task Name';
 titleInput.required = true;
+titleInput.value = task ? task.task_name : '';
 minicontainer.appendChild(titleInput);
 
 const descInput = document.createElement('input');
@@ -31,6 +32,7 @@ descInput.type = 'text';
 descInput.id = 'descInput';
 descInput.placeholder = 'Task Description';
 descInput.required = true;
+descInput.value = task ? task.task_desc : '';
 minicontainer.appendChild(descInput);
 
 const minicontainertwo = document.createElement('div');
@@ -47,12 +49,14 @@ const dueButton = document.createElement('button');
     const dueDateInput = document.createElement('input');
     dueDateInput.id = 'dueDateInput';
     dueDateInput.type = 'hidden';
+    dueDateInput.value = task ? task.due.due_task : '';
     minicontainertwo.appendChild(dueDateInput);
 
     const flatpickrInstance = flatpickr(dueDateInput, {
         enableTime: true, 
         dateFormat: "m-d", 
         minDate: "today", 
+        defaultDate: task ? task.due.due_task : null,
         onChange: function(selectedDates, dateStr, instance) {
            
             if (selectedDates.length > 0) {
@@ -67,7 +71,7 @@ const dueButton = document.createElement('button');
     })
 
 const task_priority = document.createElement('button');
-task_priority.textContent = 'Priority';
+task_priority.textContent = task ? task.task_priority : 'Priority';
 task_priority.id = 'taskPriority';
 task_priority.type = 'button';
 
@@ -85,6 +89,7 @@ const submit = document.createElement('button');
 submit.id = 'submit';
 submit.textContent = 'Add Task';
 submit.type = 'submit';
+submit.textContent = task ? 'Update Task' : 'Add Task';
 btnContainer.appendChild(cancel);
 btnContainer.appendChild(submit);
 
@@ -95,6 +100,18 @@ cancel.addEventListener("click", ()=>{
     addIcon.style.display = 'block';
     const selectTasktext = document.querySelector('.task_text');
     selectTasktext.style.display = 'block';
+    const removeModal = document.querySelector('.modal');
+    if (removeModal) {
+        removeModal.close();
+    }
+    const removecon = document.querySelector('.modal-container');
+    if (removecon) {
+        removecon.remove();
+    }
+
+    
+    flatpickrInstance.clear(); 
+
 
 });
 
@@ -134,12 +151,12 @@ form.addEventListener("submit", (event)=>{
     event.target.reset();
     flatpickrInstance.clear();
     taskpage.style.display = 'none';
+    console.log('taskpage element:', taskpage);
+
 });
 
 function displayTask(task) {
     const choosetask_container = document.querySelector('.task_containerdisplay');
-
-   
 
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
@@ -152,7 +169,8 @@ function displayTask(task) {
     checkBox.type = 'checkbox';
     taskcheckcontainer.appendChild(checkBox);
 
-    checkBox.addEventListener("click", ()=>{
+    checkBox.addEventListener("click", (event)=>{
+        event.stopPropagation();
         if(checkBox.checked){
             choosetask_container.removeChild(taskElement);
         }
@@ -182,9 +200,13 @@ function displayTask(task) {
     taskDue.textContent = `Due: ${new Date(task.due.due_task).toLocaleDateString()}`;
     taskBottom.appendChild(taskDue);
 
+    taskElement.addEventListener("click", ()=>{
+        showTaskModal(task);
+    });
+
     choosetask_container.appendChild(taskElement);
 }
 
 
-
+return form;
 }
