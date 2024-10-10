@@ -186,7 +186,7 @@ li{
     display: none; 
 }
 .flatpickr-container {
-    position: relative; /* Add this */
+    position: absolute !important; /* Add this */
 }
 div.flatpickr-calendar {
     transform: scale(0.6) !important;  
@@ -194,8 +194,10 @@ div.flatpickr-calendar {
     font-size: 1rem !important; 
     position: absolute !important; 
     right: 4rem !important;   
-    z-index: 15;   
+    z-index: 9999 !important;
 }
+
+
 
 .flatpickr-day, .flatpickr-month, .flatpickr-weekdays {
     font-size: 1rem !important;         
@@ -300,23 +302,12 @@ form.moved{
     position: absolute !important;
     left: 25.5%;
     top: 20%;
-    overflow-x: hidden;
-
+    overflow: visible !important;
+    z-index: 10000 !important;
    
 }
 
-.modal-container{
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;  /* Make sure it covers the full viewport width */
-    height: 100vh !important; /* Make sure it covers the full viewport height */
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    z-index: 9999 !important; /* Ensure it's on top of other elements */
 
-}
 
 
 .modal .form {
@@ -329,8 +320,12 @@ form.moved{
     border: none;
     position: relative;
     right: 4rem;
-    
+    overflow: visible !important;
 }
+
+
+
+
 
 
 

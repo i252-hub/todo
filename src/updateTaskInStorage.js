@@ -5,5 +5,5 @@ export function updateTaskInStorage(updatedTask) {
     if (taskIndex !== -1) {
         tasks[taskIndex] = updatedTask; 
         localStorage.setItem('tasks', JSON.stringify(tasks)); 
-    }
+    } 
 }

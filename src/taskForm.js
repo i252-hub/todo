@@ -48,21 +48,29 @@ const dueButton = document.createElement('button');
 
     const dueDateInput = document.createElement('input');
     dueDateInput.id = 'dueDateInput';
-    dueDateInput.type = 'hidden';
-    dueDateInput.value = task ? task.due.due_task : '';
+    dueDateInput.type = 'text';
+    dueDateInput.value = task && task.due ? task.due.due_task : '';
     minicontainertwo.appendChild(dueDateInput);
+    console.log('Task due date:', task ? task.due.due_task : 'No task');
 
+
+    const moodal = document.querySelector('.form')
     const flatpickrInstance = flatpickr(dueDateInput, {
         enableTime: true, 
         dateFormat: "m-d", 
         minDate: "today", 
+        position: 'absolute',
+        positionElement: moodal,
         defaultDate: task ? task.due.due_task : null,
+        Zindex: 1000,
         onChange: function(selectedDates, dateStr, instance) {
            
             if (selectedDates.length > 0) {
                 dueButton.textContent = `Due: ${dateStr}`; 
+                dueDateInput.value = dateStr;
             }
-        }
+        },
+       
        
     });
 
@@ -138,11 +146,7 @@ form.addEventListener("submit", (event)=>{
             dueDate = new Date(formattedDate); 
         }
 
-        else{
-                alert("Please select a due date.");
-                return; 
-            
-        }
+      
 
     const due = new Due(dueDate);
     const task = new Task(task_name, task_desc, task_priority_value, due);
