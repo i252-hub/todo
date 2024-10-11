@@ -1,5 +1,4 @@
 import showForm from "./taskForm";
-import { updateTaskInStorage } from "./updateTaskInStorage";
 
 export function showTaskModal(task) {
     
@@ -9,6 +8,6 @@ export function showTaskModal(task) {
     document.body.appendChild(modal);
     modal.showModal();
 
-    const form = showForm(task); // Pass the task to showForm
+    const form = showForm(task); 
     modal.appendChild(form);
 }

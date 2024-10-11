@@ -1,9 +1,5 @@
 export function updateTaskInStorage(updatedTask) {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    
-    const taskIndex = tasks.findIndex((task) => task.id === updatedTask.id); 
-    if (taskIndex !== -1) {
-        tasks[taskIndex] = updatedTask; 
-        localStorage.setItem('tasks', JSON.stringify(tasks)); 
-    } 
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks = tasks.map(task => (task.id === updatedTask.id ? updatedTask : task));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }

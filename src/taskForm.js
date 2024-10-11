@@ -5,8 +5,14 @@ import { createPriorityDropdown } from './prioritylist';
 import taskpage from "./taskpage";
 import flatpickr from "flatpickr";
 import {showTaskModal} from "./modal";
+import {updateTaskInStorage} from "./updateTaskInStorage"
 
-export default function showForm(task = null) {
+function getTaskById(taskId) {
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    return tasks.find(task => task.id === taskId);
+}
+
+export default function showForm(task) {
     console.log('hello');
 const main = document.querySelector('#main');
 
@@ -129,10 +135,18 @@ form.addEventListener("submit", (event)=>{
 
    
 
-    const task_name = document.getElementById('titleInput').value;
-    const task_desc = document.getElementById('descInput').value;
+    const task_name = titleInput.value;
+    const task_desc = descInput.value;
     const task_priority_value = task_priority.textContent !== 'Priority' ? task_priority.textContent : null;
-    const task_dueDate = document.getElementById('dueDateInput').value;
+    const task_dueDate = dueDateInput.value;
+
+    console.log('Captured Task Name:', task_name); 
+    console.log('Captured Task Description:', task_desc);
+    console.log('Captured Task Due Date:', task_dueDate);
+
+
+   
+
 
     if(!task_priority_value){
         alert("Please prioritize.");
@@ -146,13 +160,34 @@ form.addEventListener("submit", (event)=>{
             dueDate = new Date(formattedDate); 
         }
 
+        function generateTaskId() {
+            return Math.random().toString(36).substr(2, 9); // Simple unique ID generator
+        }
+        if (task) {
+            const updatedTask = new Task(task.id, task_name, task_desc, task_priority_value, new Due(task_dueDate));
+            console.log('Updated task:', updatedTask);
+            updateTaskInStorage(updatedTask);
+            displayTask(updatedTask);
+        } else {
+            const newTask = new Task(generateTaskId(), task_name, task_desc, task_priority_value, new Due(task_dueDate));
+            addTask(newTask);
+            displayTask(newTask);
+        }
+    
+        if (!task_name || !task_desc) {
+            console.log('Inputs are empty.');
+        }
       
 
-    const due = new Due(dueDate);
-    const task = new Task(task_name, task_desc, task_priority_value, due);
-    addTask(task);
-    displayTask(task);
-    event.target.reset();
+ const removeModal = document.querySelector('.modal');
+    if (removeModal) {
+        removeModal.close();
+    }
+    const removecon = document.querySelector('.modal-container');
+    if (removecon) {
+        removecon.remove();
+    }
+  
     flatpickrInstance.clear();
     taskpage.style.display = 'none';
     console.log('taskpage element:', taskpage);
@@ -162,8 +197,19 @@ form.addEventListener("submit", (event)=>{
 function displayTask(task) {
     const choosetask_container = document.querySelector('.task_containerdisplay');
 
-    const taskElement = document.createElement('div');
-    taskElement.classList.add('task');
+    let taskElement = choosetask_container.querySelector(`[data-id="${task.id}"]`);
+
+    if (!taskElement) {
+        taskElement = document.createElement('div');
+        taskElement.classList.add('task');
+        taskElement.setAttribute('data-id', task.id); 
+        choosetask_container.appendChild(taskElement);
+    } else {
+        // Clear the existing content before updating
+        taskElement.innerHTML = '';
+    }
+
+    
 
     const taskcheckcontainer = document.createElement('div');
     taskcheckcontainer.classList.add('checker');
@@ -182,12 +228,12 @@ function displayTask(task) {
 
     const taskName = document.createElement('p');
     taskName.classList.add('taskName');
-    taskName.textContent = `${task.task_name}`;
+    taskName.textContent = task.task_name ? task.task_name : "No Title";
     taskcheckcontainer.appendChild(taskName);
 
     const taskDesc = document.createElement('p');
     taskDesc.classList.add('taskDesc');
-    taskDesc.textContent = `${task.task_desc}`;
+    taskDesc.textContent = task.task_desc ? task.task_desc : "No Description";
     taskElement.appendChild(taskDesc);
 
     const taskBottom = document.createElement('div');
