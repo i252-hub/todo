@@ -1,5 +1,6 @@
 import taskpage from "./taskpage";
 import showForm  from "./taskForm";
+import { addProject } from "./addProject";
 
 
 export default function initializeDom(){
@@ -26,7 +27,14 @@ const task_con = document.querySelector('.task_container');
         });
     }   
 
-   
+    const aside = document.querySelector('aside');
+    if (aside) {
+        aside.addEventListener('click', (event) => {
+            if (event.target.closest('#addp')) {
+                  addProject();               
+            }
+        });
+    }   
 
    
 

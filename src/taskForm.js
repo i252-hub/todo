@@ -7,10 +7,7 @@ import flatpickr from "flatpickr";
 import {showTaskModal} from "./modal";
 import {updateTaskInStorage} from "./updateTaskInStorage"
 
-function getTaskById(taskId) {
-    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    return tasks.find(task => task.id === taskId);
-}
+
 
 export default function showForm(task) {
     console.log('hello');
@@ -259,4 +256,14 @@ function displayTask(task) {
 
 
 return form;
+}
+
+function hideForm() {
+    if (formElement) {
+        formElement.style.display = 'none';
+    }
+}
+
+function formExists() {
+    return !!formElement;
 }
